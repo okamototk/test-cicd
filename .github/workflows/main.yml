@@ -1,6 +1,9 @@
 name: CI
 
-on: [issue_comment]
+on:
+  pull_request:
+    branches: [dev]
+    types: [opened, reopened]
 
 jobs:
   build:
