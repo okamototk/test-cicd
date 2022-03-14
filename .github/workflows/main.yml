@@ -14,14 +14,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Log in to the Container registry
+      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.AUTH_TOKEN }}
     - name: build Dockerfile and push image # userで外部ファイル or 定義済みの処理を実行できる。ここではリポジトリのcheckout
       run: |
         IMAGE_NAME=test_container:tmp # docer imageの名前とそのタグ、${GITHUB_REF#refs/heads/}でブランチ名を取得している
         #IMAGE_NAME=test_container:${GITHUB_REF#refs/heads/} # docer imageの名前とそのタグ、${GITHUB_REF#refs/heads/}でブランチ名を取得している
         docker build . --tag docker.pkg.github.com/${GITHUB_REPOSITORY}/${IMAGE_NAME}
-        docker login docker.pkg.github.com --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
+        #docker login docker.pkg.github.com --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
         docker push docker.pkg.github.com/k8shiro/github_docker_push_example/${IMAGE_NAME}
       env:
-          DOCKER_USERNAME: ${{ secrets.GITHUB_DOCKER_USERNAME }} # リポジトリのsecretsとして定義した値を環境変数に渡す
-          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          #DOCKER_USERNAME: ${{ secrets.GITHUB_DOCKER_USERNAME }} # リポジトリのsecretsとして定義した値を環境変数に渡す
+          #DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
