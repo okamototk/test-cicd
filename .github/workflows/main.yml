@@ -14,20 +14,21 @@ jobs:
     name: Delete image from ghcr.io
     runs-on: ubuntu-latest
     steps:
-      - name: Delete image
-        uses: bots-house/ghcr-delete-image-action@v1.0.0
-        with:
-          # NOTE: at now only orgs is supported
-          owner: bots-house
-          name: ${GITHUB_REPOSITORY}/test_container:tmp
-          # NOTE: using Personal Access Token
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: tmp
+
   build:
 
     runs-on: ubuntu-latest
 
     steps:
+　　- name: Delete image
+    　uses: bots-house/ghcr-delete-image-action@v1.0.0
+      with:
+        # NOTE: at now only orgs is supported
+        owner: bots-house
+        name: ${GITHUB_REPOSITORY}/test_container:tmp
+        # NOTE: using Personal Access Token
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: tmp
     - uses: actions/checkout@v1
     - name: Log in to the Container registry
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
