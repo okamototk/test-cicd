@@ -27,7 +27,8 @@ jobs:
     - name: build Dockerfile and push image # userで外部ファイル or 定義済みの処理を実行できる。ここではリポジトリのcheckout
       run: |
         PR=$(echo $GITHUB_REF | sed -e 's/[^0-9]//g')
-        IMAGE_NAME=test_container:PR${PR} # docer imageの名前とそのタグ、${GITHUB_REF#refs/heads/}でブランチ名を取得している
+        #IMAGE_NAME=test_container:PR${PR} # docer imageの名前とそのタグ、${GITHUB_REF#refs/heads/}でブランチ名を取得している
+        IMAGE_NAME=test_container:tmp
         #IMAGE_NAME=test_container:${GITHUB_REF#refs/heads/} # docer imageの名前とそのタグ、${GITHUB_REF#refs/heads/}でブランチ名を取得している
         docker buildx build . --tag ghcr.io/${GITHUB_REPOSITORY}/${IMAGE_NAME}
         #docker login docker.pkg.github.com -username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
