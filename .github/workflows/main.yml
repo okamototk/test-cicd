@@ -22,8 +22,7 @@ jobs:
 #        registry: ${{ env.REGISTRY }}
         username: okamototk
           #username: ${{ github.actor }}
-        password:  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
-          #password: ${{ secrets.AUTH_TOKEN }}
+        password: ${{ secrets.AUTH_TOKEN }}
     - name: build Dockerfile and push image # userで外部ファイル or 定義済みの処理を実行できる。ここではリポジトリのcheckout
       run: |
         IMAGE_NAME=test_container:tmp # docer imageの名前とそのタグ、${GITHUB_REF#refs/heads/}でブランチ名を取得している
