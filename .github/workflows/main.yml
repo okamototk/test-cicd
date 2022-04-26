@@ -59,8 +59,6 @@ jobs:
         sarif_file: 'trivy-results.sarif'
     - name: build Dockerfile and push image # userで外部ファイル or 定義済みの処理を実行できる。ここではリポジトリのcheckout
       run: |
-        docker login docker.pkg.github.com -username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
+        docker login docker.pkg.github.com -username ${{ secrets.GITHUB_DOCKER_USERNAME }} --password  ${{ secrets.GITHUB_TOKEN }}
         docker push ghcr.io/${GITHUB_REPOSITORY}/${IMAGE_NAME}
-        #env:
-          #DOCKER_USERNAME: ${{ secrets.GITHUB_DOCKER_USERNAME }} # リポジトリのsecretsとして定義した値を環境変数に渡す
-          #DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+
