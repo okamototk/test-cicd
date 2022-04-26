@@ -22,6 +22,7 @@ jobs:
         docker build ./app --tag docker.pkg.github.com/${GITHUB_REPOSITORY}/${IMAGE_NAME}
     - uses: aquasecurity/trivy-action@master
         with:
+          image-ref: docker.pkg.github.com/${GITHUB_REPOSITORY}/${IMAGE_NAME}
           scan-type: 'fs'
           ignore-unfixed: true
           format: 'sarif'
