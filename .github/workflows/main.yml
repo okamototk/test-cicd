@@ -30,7 +30,7 @@ jobs:
     - name: Log in to the Container registry
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
       with:
-        registry: ghcr.io
+        registry: ghcr.i  
 #        registry: ${{ env.REGISTRY }}
         #username: okamototk
         username: ${{ github.actor }}
@@ -41,13 +41,13 @@ jobs:
         IMAGE_NAME=test_container:${GITHUB_REF#refs/heads/} # docer imageの名前とそのタグ、${GITHUB_REF#refs/heads/}でブランチ名を取得している
         docker build ./app --tag docker.pkg.github.com/${GITHUB_REPOSITORY}/${IMAGE_NAME}
     - uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: docker.pkg.github.com/${GITHUB_REPOSITORY}/${IMAGE_NAME}
-          scan-type: 'fs'
-          ignore-unfixed: true
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL'
+      with:
+        image-ref: docker.pkg.github.com/${GITHUB_REPOSITORY}/${IMAGE_NAME}
+        scan-type: 'fs'
+        ignore-unfixed: true
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        severity: 'CRITICAL'
       env:
           DOCKER_USERNAME: ${{ secrets.GITHUB_DOCKER_USERNAME }} # リポジトリのsecretsとして定義した値を環境変数に渡す
           DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
