@@ -40,7 +40,7 @@ jobs:
       run: |
         IMAGE_NAME=test_container:test # docer imageの名前とそのタグ、${GITHUB_REF#refs/heads/}でブランチ名を取得している
         #        IMAGE_NAME=test_container:${GITHUB_REF#refs/heads/} # docer imageの名前とそのタグ、${GITHUB_REF#refs/heads/}でブランチ名を取得している
-        docker build ./app -t docker.pkg.github.com/${GITHUB_REPOSITORY}/${IMAGE_NAME}
+        docker build . -t docker.pkg.github.com/${GITHUB_REPOSITORY}/${IMAGE_NAME}
     - uses: aquasecurity/trivy-action@master
       with:
         image-ref: docker.pkg.github.com/${GITHUB_REPOSITORY}/${IMAGE_NAME}
