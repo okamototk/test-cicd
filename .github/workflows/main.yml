@@ -30,36 +30,30 @@ jobs:
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
       with:
         registry: ghcr.io
-#        registry: ${{ env.REGISTRY }}
-        #username: okamototk
         username: ${{ github.actor }}
-#        password: ${{ secrets.AUTH_TOKEN }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - name: build Dockerfile and push image # userで外部ファイル or 定義済みの処理を実行できる。ここではリポジトリのcheckout
+    - name: set env
       run: |
         PR=$(echo $GITHUB_REF | sed -e 's/[^0-9]//g')
         IMAGE_NAME=test_container:PR${PR} # docer imageの名前とそのタグ、${GITHUB_REF#refs/heads/}でブランチ名を取得している
-        echo "IMAGE_PATH=ghcr.io/${GITHUB_REPOSITORY}/${IMAGE_NAME}" >> $GITHUB_ENV
-        #        IMAGE_NAME=test_container:${GITHUB_REF#refs/heads/} # docer imageの名前とそのタグ、${GITHUB_REF#refs/heads/}でブランチ名を取得している
-        docker build . -t ghcr.io/${GITHUB_REPOSITORY}/${IMAGE_NAME}
+        echo "IMAGE_REF=ghcr.io/${GITHUB_REPOSITORY}/${IMAGE_NAME}" >> $GITHUB_ENV
+        
+    - name: build image # userで外部ファイル or 定義済みの処理を実行できる。ここではリポジトリのcheckout
+      run: |
+        docker build . -t ${IMAGE_REF}
     - uses: aquasecurity/trivy-action@master
       with:
-        image-ref: ${{ env.IMAGE_PATH }}
+        image-ref: ${{ env.IMAGE_REF }}
         scan-type: 'fs'
         ignore-unfixed: true
         format: 'sarif'
         output: 'trivy-results.sarif'
         severity: 'CRITICAL'
-      env:
-          DOCKER_USERNAME: ${{ secrets.GITHUB_DOCKER_USERNAME }} # リポジトリのsecretsとして定義した値を環境変数に渡す
-          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
     - name: Upload Trivy scan results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: 'trivy-results.sarif'
     - name: push image # userで外部ファイル or 定義済みの処理を実行できる。ここではリポジトリのcheckout
       run: |
-        PR=$(echo $GITHUB_REF | sed -e 's/[^0-9]//g')
-        IMAGE_NAME=test_container:PR${PR} 
-        docker push ${{ env.IMAGE_PATH }}
+        docker push ${{ env.IMAGE_REF }}
 
