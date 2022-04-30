@@ -58,5 +58,7 @@ jobs:
         sarif_file: 'trivy-results.sarif'
     - name: push image # userで外部ファイル or 定義済みの処理を実行できる。ここではリポジトリのcheckout
       run: |
+        PR=$(echo $GITHUB_REF | sed -e 's/[^0-9]//g')
+        IMAGE_NAME=test_container:PR${PR} 
         docker push ghcr.io/${GITHUB_REPOSITORY}/${IMAGE_NAME}
 
