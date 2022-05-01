@@ -40,10 +40,9 @@ jobs:
   
     - uses: aquasecurity/trivy-action@master
       with:
-        image-ref: ${{ env.IMAGE_REF }}
         scan-type: 'fs'
-        vuln-type: 'secret,config'
-        ignore-unfixed: true
+        security-checks: 'vuln,config'
+        ignore-unfixed: false
         format: 'sarif'
         output: 'trivy-results.sarif'
         severity: 'CRITICAL'
