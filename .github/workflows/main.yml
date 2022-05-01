@@ -37,7 +37,7 @@ jobs:
       with:
         args:
           -Dsonar.organization=okamototk
-          -Dsonar.projectKey=test-cicd
+          -Dsonar.projectKey=okamototk_test-cicd
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
