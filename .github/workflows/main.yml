@@ -40,20 +40,21 @@ jobs:
   
     - uses: aquasecurity/trivy-action@master
       with:
-        scan-type: 'fs'
+        scan-type: 'config'
         security-checks: 'vuln,config'
         ignore-unfixed: false
-        format: 'sarif'
-        output: 'trivy-results.sarif'
+#        format: 'sarif'
+#        output: 'trivy-results.sarif'
         severity: 'CRITICAL'
-    - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-        sarif_file: 'trivy-results.sarif'
+#    - name: Upload Trivy scan results to GitHub Security tab
+#      uses: github/codeql-action/upload-sarif@v1
+#      with:
+#        sarif_file: 'trivy-results.sarif'
             
     - name: build image # userで外部ファイル or 定義済みの処理を実行できる。ここではリポジトリのcheckout
       run: |
         docker build . -t ${IMAGE_REF}
+  
     - uses: aquasecurity/trivy-action@master
       with:
         image-ref: ${{ env.IMAGE_REF }}
