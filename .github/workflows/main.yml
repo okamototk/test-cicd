@@ -42,15 +42,15 @@ jobs:
         scan-type: 'config'
 #        security-checks: 'vuln,config'
         ignore-unfixed: false
-        exit-code: '1'
+        exit-code: '0'
         hide-progress: false
-#        format: 'sarif'
-#        output: 'trivy-results.sarif'
+        format: 'sarif'
+#        output: 'trivy-dockerfile-results.sarif'
         severity: 'HIGH,CRITICAL'
-#    - name: Upload Trivy scan results to GitHub Security tab
-#      uses: github/codeql-action/upload-sarif@v1
-#      with:
-#        sarif_file: 'trivy-results.sarif'
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: 'trivy-dockerfile-results.sarif'
             
     - name: build image # userで外部ファイル or 定義済みの処理を実行できる。ここではリポジトリのcheckout
       run: |
@@ -62,12 +62,12 @@ jobs:
         scan-type: image
         ignore-unfixed: true
         format: 'sarif'
-        output: 'trivy-results.sarif'
+        output: 'trivy-image-results.sarif'
         severity: 'CRITICAL'
     - name: Upload Trivy scan results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v1
       with:
-        sarif_file: 'trivy-results.sarif'
+        sarif_file: 'trivy-image-results.sarif'
       
     - name: push image # userで外部ファイル or 定義済みの処理を実行できる。ここではリポジトリのcheckout
       run: |
