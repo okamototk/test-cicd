@@ -43,6 +43,7 @@ jobs:
 #        security-checks: 'vuln,config'
         ignore-unfixed: false
         exit-code: '1'
+        hide-progress: false
 #        format: 'sarif'
 #        output: 'trivy-results.sarif'
         severity: 'HIGH,CRITICAL'
