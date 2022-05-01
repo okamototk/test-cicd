@@ -1,4 +1,5 @@
 From golang:latest as builder
+USER root
 ADD main.go /
 WORKDIR / 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo main.go
