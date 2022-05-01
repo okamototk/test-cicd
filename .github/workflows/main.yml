@@ -37,7 +37,21 @@ jobs:
         PR=$(echo $GITHUB_REF | sed -e 's/[^0-9]//g')
         IMAGE_NAME=test_container:PR${PR} # docer imageの名前とそのタグ、${GITHUB_REF#refs/heads/}でブランチ名を取得している
         echo "IMAGE_REF=ghcr.io/${GITHUB_REPOSITORY}/${IMAGE_NAME}" >> $GITHUB_ENV
-        
+  
+    - uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: ${{ env.IMAGE_REF }}
+        scan-type: 'fs'
+        vuln-type: 'vuln,secret,config'
+        ignore-unfixed: true
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        severity: 'CRITICAL'
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: 'trivy-results.sarif'
+            
     - name: build image # userで外部ファイル or 定義済みの処理を実行できる。ここではリポジトリのcheckout
       run: |
         docker build . -t ${IMAGE_REF}
@@ -53,6 +67,7 @@ jobs:
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: 'trivy-results.sarif'
+      
     - name: push image # userで外部ファイル or 定義済みの処理を実行できる。ここではリポジトリのcheckout
       run: |
         docker push ${{ env.IMAGE_REF }}
