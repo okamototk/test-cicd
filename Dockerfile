@@ -5,6 +5,7 @@ WORKDIR /
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo main.go
 
 From centos:7.0.1406
+USER root
 EXPOSE 80
 COPY --from=builder /main /web
 ENTRYPOINT ["/web"]
