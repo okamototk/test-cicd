@@ -11,7 +11,7 @@ import (
 func handler(w http.ResponseWriter, r *http.Request) {
     addrs,_ := net.InterfaceAddrs()
     host,_ := os.Hostname()
-    fmt.Fprintf(w, "Hello GitLab!\n")
+    fmt.Fprintf(w, "Hello GitLab2!\n")
     fmt.Fprintf(w, "%s\n", host)
     fmt.Fprintf(w, "%s", addrs[1].(*net.IPNet).IP.To4())
 }
